@@ -1,0 +1,27 @@
+# Default hyperparameters used by train.py (also passed as CLI flags --
+# this file is a human-readable reference, not auto-loaded).
+#
+# The exact configuration for any specific run is auto-saved to
+# results/run_config.json by train.py, and embedded in the checkpoint
+# itself (checkpoint["run_config"]) -- those are the source of truth for
+# reproducing a particular result. This file documents the defaults only.
+
+epochs: 20
+batch_size: 16
+lr: 0.001                # Adam learning rate
+img_size: 128             # only used for synthetic / --real-dir data
+train_len: 400            # synthetic samples per epoch (synthetic / --real-dir only)
+val_len: 60
+ssim_weight: 0.2          # loss = (1 - ssim_weight) * L1 + ssim_weight * (1 - SSIM)
+seed: 42                  # random seed: torch/numpy/random, and the train/val split
+val_fraction: 0.1         # official dataset only: held-out fraction, split by filename
+
+model: SIRNet              # residual U-Net, ~467K params, src/model.py
+optimizer: Adam
+scheduler: CosineAnnealingLR
+loss: L1SSIMLoss            # src/train.py
+
+# Real dataset assumption (update if your download differs):
+gt_resolution: 256x256
+noisylr_resolution: 128x128
+upscale_factor: 2           # NoisyLR -> GT resolution ratio, used by inference.py

@@ -1,0 +1,343 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Defectdetectives Restoration Bench</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Eb+Garamond:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@100..900&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Reticle effect */
+        .reticle-container {
+            position: relative;
+        }
+        .reticle-container::before, .reticle-container::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-color: #c2652a;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .reticle-tl::before {
+            top: -1px; left: -1px;
+            border-top: 2px solid #c2652a;
+            border-left: 2px solid #c2652a;
+        }
+        .reticle-br::after {
+            bottom: -1px; right: -1px;
+            border-bottom: 2px solid #c2652a;
+            border-right: 2px solid #c2652a;
+        }
+
+        /* Glassmorphism panel */
+        .glass-panel {
+            background-color: rgba(250, 245, 238, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* Pulsing progress */
+        @keyframes pulse-amber {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .animate-pulse-amber {
+            animation: pulse-amber 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        /* Ghost Button Hover */
+        .ghost-btn:hover {
+            border-color: #c2652a;
+            color: #c2652a;
+        }
+    </style>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "tertiary-fixed": "#fce0e0",
+                "surface-variant": "#ece6dc",
+                "on-tertiary-fixed-variant": "#6e3030",
+                "surface-tint": "#c2652a",
+                "primary": "#c2652a",
+                "outline-variant": "#d8d0c8",
+                "outline": "#9a9088",
+                "inverse-primary": "#f0a878",
+                "on-tertiary-fixed": "#2e1515",
+                "on-surface-variant": "#605850",
+                "surface-bright": "#faf5ee",
+                "surface-container-highest": "#e6e0d6",
+                "on-tertiary-container": "#3a2020",
+                "primary-fixed": "#fbe8d8",
+                "on-primary": "#ffffff",
+                "surface-container-high": "#ece6dc",
+                "inverse-on-surface": "#faf5ee",
+                "on-secondary-fixed": "#2a2420",
+                "tertiary-fixed-dim": "#e8a0a0",
+                "on-secondary": "#ffffff",
+                "on-surface": "#3a302a",
+                "error": "#c0392b",
+                "on-tertiary": "#ffffff",
+                "background": "#faf5ee",
+                "surface-container-low": "#f6f0e8",
+                "secondary": "#78706a",
+                "error-container": "#fce4e0",
+                "surface": "#faf5ee",
+                "inverse-surface": "#3a302a",
+                "on-error-container": "#7a1a10",
+                "on-secondary-container": "#605850",
+                "on-primary-fixed": "#401a08",
+                "primary-fixed-dim": "#f0a878",
+                "surface-container-lowest": "#ffffff",
+                "tertiary-container": "#d47070",
+                "tertiary": "#8c3c3c",
+                "secondary-fixed": "#eae2da",
+                "on-secondary-fixed-variant": "#504840",
+                "surface-dim": "#dcd6cc",
+                "secondary-container": "#eae2da",
+                "secondary-fixed-dim": "#cec6be",
+                "surface-container": "#f2ece4",
+                "on-primary-fixed-variant": "#8a4518",
+                "on-error": "#ffffff",
+                "on-primary-container": "#fbe8d8",
+                "primary-container": "#e08850",
+                "on-background": "#3a302a"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {},
+        "fontFamily": {
+                "headline": [
+                        "Eb Garamond"
+                ],
+                "display": [
+                        "Eb Garamond"
+                ],
+                "body": [
+                        "Manrope"
+                ],
+                "label": [
+                        "Manrope"
+                ]
+        },
+        "fontSize": {}
+},
+    },
+  }
+</script>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen flex flex-col">
+<!-- TopNavBar from Shared Components -->
+<header class="flex justify-between items-center w-full px-8 h-16 bg-surface border-b border-outline-variant flex-shrink-0 z-50">
+<div class="flex items-center gap-4">
+<h1 class="font-headline text-2xl tracking-tighter text-primary uppercase flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>Defectdetectives</h1>
+</div>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant font-label text-sm hover:text-primary transition-colors duration-200 uppercase tracking-widest" href="#">Models</a>
+<a class="text-on-surface-variant font-label text-sm hover:text-primary transition-colors duration-200 uppercase tracking-widest" href="#">Datasets</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label text-sm uppercase tracking-widest" href="#">Inference</a>
+<a class="text-on-surface-variant font-label text-sm hover:text-primary transition-colors duration-200 uppercase tracking-widest" href="#">History</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="bg-primary-container text-on-primary font-label text-sm px-6 py-2 rounded-DEFAULT hover:opacity-90 transition-opacity shadow-sm">
+                Execute Restoration
+            </button>
+<div class="flex gap-2">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar from Shared Components -->
+<aside class="hidden md:flex flex-col fixed left-0 top-16 bottom-0 z-40 bg-surface-container border-r border-outline-variant w-80 h-[calc(100vh-4rem)]">
+<div class="p-6 border-b border-outline-variant">
+<h2 class="font-headline text-2xl text-primary mb-1">Workbench v2.4</h2>
+<p class="font-label text-sm text-on-surface-variant uppercase tracking-widest">ML-RT Precision Ops</p>
+<div class="mt-4 flex items-center gap-2 font-label text-xs text-surface-tint">
+<span class="w-2 h-2 rounded-full bg-surface-tint"></span>
+                    System Status Indicator Nominal
+                </div>
+</div>
+<nav class="flex-1 py-4 overflow-y-auto">
+<a class="flex items-center gap-3 text-on-surface-variant p-3 mx-2 font-label text-sm hover:bg-surface-container-high transition-all rounded-lg uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                    Checkpoint
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant p-3 mx-2 font-label text-sm hover:bg-surface-container-high transition-all rounded-lg uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">upload_file</span>
+                    Input
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant p-3 mx-2 font-label text-sm hover:bg-surface-container-high transition-all rounded-lg uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">architecture</span>
+                    Weights
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant p-3 mx-2 font-label text-sm hover:bg-surface-container-high transition-all rounded-lg uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">layers</span>
+                    Layers
+                </a>
+<a class="flex items-center gap-3 bg-primary-container text-on-primary rounded-lg p-3 mx-2 font-label text-sm border-l-2 border-primary uppercase tracking-widest shadow-sm" href="#">
+<span class="material-symbols-outlined">memory</span>
+                    Inference
+                </a>
+</nav>
+<div class="p-4 border-t border-outline-variant">
+<button class="w-full mb-4 border border-outline text-on-surface py-2 rounded-DEFAULT font-label text-sm ghost-btn transition-colors uppercase tracking-widest">
+                    Export Config
+                </button>
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 text-on-surface-variant p-2 font-label text-sm hover:bg-surface-container-high transition-all rounded-lg uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-sm">settings</span>
+                        Settings
+                    </a>
+<a class="flex items-center gap-3 text-on-surface-variant p-2 font-label text-sm hover:bg-surface-container-high transition-all rounded-lg uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-sm">logout</span>
+                        Log Out
+                    </a>
+</div>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="flex-1 md:ml-80 overflow-y-auto bg-background p-4 md:p-12 flex flex-col items-center">
+<div class="max-w-6xl w-full space-y-12">
+<!-- Header Area -->
+<div class="text-center md:text-left mb-8">
+<h2 class="font-display text-5xl text-on-background mb-4 flex items-center justify-center md:justify-start gap-4">
+                        SIRNet Restoration Bench
+                    </h2>
+<p class="font-body text-lg text-on-surface-variant max-w-3xl leading-relaxed">
+                        Upload -&gt; restore -&gt; inspect. Run any degraded image through a checkpoint and compare input against output. Local-only, for sanity-checking during development.
+                    </p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+<!-- Left Column: Controls (Checkpoint & Input) -->
+<div class="flex flex-col gap-8 xl:col-span-1">
+<!-- Checkpoint Panel -->
+<div class="glass-panel border border-outline-variant rounded-DEFAULT p-8 reticle-container reticle-tl reticle-br relative overflow-hidden group hover:border-outline transition-colors shadow-sm">
+<div class="absolute top-0 right-0 p-4">
+<span class="material-symbols-outlined text-primary-container text-opacity-50 group-hover:text-opacity-100 transition-opacity">memory</span>
+</div>
+<h3 class="font-label text-on-surface uppercase mb-6 tracking-widest text-xs opacity-70">Model Checkpoint</h3>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-DEFAULT p-4 mb-6 cursor-pointer hover:border-primary-container transition-colors flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">folder_zip</span>
+<span class="font-label text-sm text-on-background">sirnet_v4_epoch120.ckpt</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">expand_more</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label text-xs text-on-surface-variant uppercase tracking-widest">Status</span>
+<div class="flex items-center gap-2 border border-primary-container px-3 py-1.5 rounded-DEFAULT bg-surface-container-lowest shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse-amber"></span>
+<span class="font-label text-xs text-primary-container uppercase tracking-wider">Loaded</span>
+</div>
+</div>
+</div>
+<!-- Input Section -->
+<div class="glass-panel border border-outline-variant rounded-DEFAULT p-8 reticle-container reticle-tl reticle-br flex-1 flex flex-col shadow-sm">
+<h3 class="font-label text-on-surface uppercase mb-6 tracking-widest text-xs opacity-70">Input Subject</h3>
+<!-- Drag & Drop Zone -->
+<div class="border-2 border-dashed border-outline-variant rounded-DEFAULT p-10 flex flex-col items-center justify-center text-center hover:border-primary-container transition-colors cursor-pointer mb-8 flex-1 bg-surface-container-lowest">
+<span class="material-symbols-outlined text-on-surface-variant text-5xl mb-4">upload_file</span>
+<p class="font-body text-base text-on-background mb-2">Drag &amp; drop degraded asset</p>
+<p class="font-label text-xs text-on-surface-variant uppercase tracking-widest">or click to browse local files</p>
+</div>
+<!-- Controls -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="font-label text-sm text-on-surface cursor-ew-resize hover:text-primary-container transition-colors uppercase tracking-widest">Upscale Factor [2x]</label>
+<span class="font-label text-sm text-on-surface-variant">2.0</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-1/2"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Results Area -->
+<div class="xl:col-span-2 flex flex-col gap-8">
+<!-- Main Viewport -->
+<div class="glass-panel border border-outline-variant rounded-DEFAULT flex-1 p-3 flex flex-col relative reticle-container reticle-tl reticle-br min-h-[600px] shadow-sm">
+<div class="flex justify-between items-center px-6 py-4 border-b border-outline-variant bg-surface-container-lowest rounded-t-DEFAULT">
+<div class="flex gap-6">
+<button class="font-label text-xs text-on-surface-variant hover:text-on-background uppercase tracking-wider">Split View</button>
+<button class="font-label text-xs text-primary-container uppercase tracking-wider border-b-2 border-primary-container pb-1">Overlay</button>
+</div>
+<div class="flex gap-4">
+<button class="p-1 text-on-surface-variant hover:text-on-background"><span class="material-symbols-outlined text-sm">zoom_in</span></button>
+<button class="p-1 text-on-surface-variant hover:text-on-background"><span class="material-symbols-outlined text-sm">zoom_out</span></button>
+<button class="p-1 text-on-surface-variant hover:text-on-background"><span class="material-symbols-outlined text-sm">fit_screen</span></button>
+</div>
+</div>
+<!-- Image Comparison Container -->
+<div class="flex-1 relative bg-surface-dim overflow-hidden flex items-center justify-center border-b border-outline-variant">
+<!-- Dummy Images for structural layout. Using placeholders as requested -->
+<div class="absolute inset-0 w-full h-full flex">
+<div class="w-1/2 h-full border-r border-primary-container relative overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A highly detailed, degraded, grainy historical photograph of an intricate mechanical assembly in a dimly lit industrial setting. The image is noisy and lacks sharpness, heavily artifacted. Lighting is moody and low-key. A subtle grid overlay hints at technical analysis. Color palette is muted greys and deep blacks with slight sepia tones, fitting a precision laboratory dark mode UI context." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBbUOBq0r88KDTNywvus9Z2MQDR9th97mJKY2FLtLb3SncCDCaCErKbxgk3PSZHUImuIx3_835CBwaDIVKoLZen3rw7Cv0_FNEFfAfHxvxs39HOCD2fExttV_5c0Bg1ITVsFV6GhRygX2eUAbQJAoP2mTZAU1fw1qF_S5Xj8XDTwtnJdLUUysJ9TEWSyo0lEZ6VrD-1J4aqE3cIW44RGOyVzjqdS4e7JsYYFrRNC4HXsrTqqGzFxR74WA')"></div>
+<div class="absolute bottom-4 left-4 bg-surface-container-lowest px-3 py-1.5 rounded-DEFAULT border border-outline-variant font-label text-xs text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity shadow-sm uppercase tracking-widest">Input (Degraded)</div>
+</div>
+<div class="w-1/2 h-full relative overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A perfectly restored, ultra-sharp, high-resolution rendering of the same intricate mechanical assembly from the previous image. The noise is completely removed, revealing hyper-realistic details, metallic textures, and precise geometry. The lighting is crisp and analytical, highlighting edges. Set against a pure dark background #121416. The image conveys advanced computational restoration and scientific rigor, aligning perfectly with a high-end technical ML workbench interface." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAQUNk2yRxplezQajw6DONEpivWLmCtz_P9XZ6SnsG0k3iZn7RhvmBt5dfGPUjS-qkDLZibYO6nrb2hpbNe_AUkPvhP7KpYeZuqwfmfEOltU7ilRtkoYoC4NqZfKb6zeJfnPeGLTlfwh6uG4-x4v6Ab5296c3_QKTFecXSB-p0Gy7JCDDmaHJe55JXJtjv3Ak9fgsV1_B1VAj4Nzp97AsEo1Xq4yBwhsOFp6v8_hHYEa0peFWltzsM_SA')"></div>
+<div class="absolute bottom-4 right-4 bg-surface-container-lowest px-3 py-1.5 rounded-DEFAULT border border-outline-variant font-label text-xs text-primary-container opacity-0 group-hover:opacity-100 transition-opacity shadow-sm uppercase tracking-widest">Output (Restored)</div>
+</div>
+</div>
+<!-- Slider Handle -->
+<div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-primary-container flex items-center justify-center cursor-ew-resize">
+<div class="w-8 h-8 bg-surface-container-lowest border-2 border-primary-container rounded-full flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-primary-container text-sm">unfold_more</span>
+</div>
+</div>
+</div>
+<!-- Meta Stats Strip -->
+<div class="bg-surface-container-lowest p-4 flex justify-between items-center rounded-b-DEFAULT">
+<div class="flex gap-8 font-label text-xs text-on-surface-variant uppercase tracking-widest">
+<div class=""><span class="opacity-50 mr-1">Res:</span> 512x512 -&gt; 1024x1024</div>
+<div class=""><span class="opacity-50 mr-1">PSNR:</span> 32.4dB</div>
+<div class=""><span class="opacity-50 mr-1">SSIM:</span> 0.941</div>
+</div>
+<div class="flex items-center gap-2 font-label text-xs text-primary-container uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                                    1.2s inference
+                                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer from Shared Components -->
+<footer class="fixed bottom-0 w-full px-8 py-3 flex justify-between items-center z-50 bg-surface-container-lowest bg-opacity-90 backdrop-blur-md border-t border-outline-variant flex-shrink-0">
+<div class="text-primary font-bold font-label text-xs uppercase tracking-widest">
+            © 2024 PRECISION_LABS // ALL SYSTEMS NOMINAL
+        </div>
+<nav class="flex gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-all font-label text-xs uppercase tracking-widest cursor-pointer" href="#">Documentation</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-label text-xs uppercase tracking-widest cursor-pointer" href="#">API Status</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-label text-xs uppercase tracking-widest cursor-pointer" href="#">Support</a>
+</nav>
+</footer>
+
+
+</body></html>

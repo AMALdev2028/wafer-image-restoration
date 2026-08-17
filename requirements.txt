@@ -1,0 +1,8 @@
+torch
+numpy
+opencv-python-headless
+scikit-image
+matplotlib
+pytorch-msssim
+lpips
+flask

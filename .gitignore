@@ -1,0 +1,10 @@
+venv/ 
+__pycache__/ 
+train/
+Test_NoisyLR/
+results/predictions*/
+webapp/static/uploads/*
+webapp/static/results/*
+!webapp/static/uploads/.gitkeep
+!webapp/static/results/.gitkeep
+results/run_test_output/
